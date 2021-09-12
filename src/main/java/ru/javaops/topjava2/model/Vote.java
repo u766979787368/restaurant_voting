@@ -1,5 +1,6 @@
 package ru.javaops.topjava2.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -26,6 +27,7 @@ public class Vote extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
+    @JsonBackReference
     private Restaurant restaurant;
 
     @ManyToOne(fetch = FetchType.LAZY)

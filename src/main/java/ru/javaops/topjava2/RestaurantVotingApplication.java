@@ -12,7 +12,7 @@ import ru.javaops.topjava2.repository.VoteRepository;
 
 @SpringBootApplication
 @AllArgsConstructor
-public class RestaurantVotingApplication implements ApplicationRunner {
+public class RestaurantVotingApplication {
 
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
@@ -24,11 +24,5 @@ public class RestaurantVotingApplication implements ApplicationRunner {
         SpringApplication.run(RestaurantVotingApplication.class, args);
     }
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        System.out.println(userRepository.findAll());
-        System.out.println(restaurantRepository.findAll());
-        System.out.println(mealRepository.findAll());
-        System.out.println(voteRepository.findAll());
-    }
+
 }

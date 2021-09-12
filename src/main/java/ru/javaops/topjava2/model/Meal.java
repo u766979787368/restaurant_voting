@@ -1,29 +1,39 @@
 package ru.javaops.topjava2.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "meal")
+@Table(name = "meal", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "date"}, name = "uk_meal_name_date")})
 @Getter
 @Setter
 @ToString(callSuper = true, exclude = {"restaurant"})
+@NoArgsConstructor
 public class Meal extends NamedEntity {
 
     @Column(name = "price", nullable = false)
     @NotNull
     private int price;
 
-    @Column(name = "date_time", nullable = false)
+    @Column(name = "date", nullable = false)
     @NotNull
-    private LocalDateTime dateTime;
+    private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
+    @JsonBackReference
     private Restaurant restaurant;
+
+    public Meal(Integer id, String name, LocalDate date, int price) {
+        super(id, name);
+        this.date = date;
+        this.price = price;
+    }
 }
