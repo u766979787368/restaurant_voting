@@ -6,7 +6,6 @@ import ru.javaops.topjava2.util.JsonUtil;
 import ru.javaops.topjava2.web.MatcherFactory;
 
 import java.util.Collections;
-import java.util.Date;
 
 public class UserTestData {
     public static final MatcherFactory.Matcher<User> MATCHER = MatcherFactory.usingIgnoringFieldsComparator(User.class, "registered", "password");
@@ -21,11 +20,11 @@ public class UserTestData {
     public static final User admin = new User(ADMIN_ID, "Admin", ADMIN_MAIL, "admin", Role.ADMIN, Role.USER);
 
     public static User getNew() {
-        return new User(null, "New", "new@gmail.com", "newPass", false, new Date(), Collections.singleton(Role.USER));
+        return new User(null, "New", "new@gmail.com", "newPass", Collections.singleton(Role.USER));
     }
 
     public static User getUpdated() {
-        return new User(USER_ID, "UpdatedName", USER_MAIL, "newPass", false, new Date(), Collections.singleton(Role.ADMIN));
+        return new User(USER_ID, "UpdatedName", USER_MAIL, "newPass", Collections.singleton(Role.ADMIN));
     }
 
     public static String jsonWithPassword(User user, String passw) {
