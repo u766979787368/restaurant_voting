@@ -2,6 +2,7 @@ package ru.javaops.topjava2.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Table(name = "restaurant")
 @Getter
 @Setter
+@ToString(callSuper = true, exclude = {"meals", "votes"})
 public class Restaurant extends NamedEntity {
 
     @Column(name = "date", nullable = false)

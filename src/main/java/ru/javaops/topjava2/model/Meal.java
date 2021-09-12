@@ -2,6 +2,7 @@ package ru.javaops.topjava2.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "meal")
 @Getter
 @Setter
+@ToString(callSuper = true, exclude = {"restaurant"})
 public class Meal extends NamedEntity {
 
     @Column(name = "price", nullable = false)

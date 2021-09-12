@@ -2,6 +2,7 @@ package ru.javaops.topjava2.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import java.time.LocalTime;
 @Table(name = "vote", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date"}, name = "uk_user_date")})
 @Getter
 @Setter
+@ToString(callSuper = true, exclude = {"restaurant", "user"})
 public class Vote extends BaseEntity{
 
     @Column(name = "date", nullable = false)
