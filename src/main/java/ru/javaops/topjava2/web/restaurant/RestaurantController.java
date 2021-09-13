@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javaops.topjava2.model.Restaurant;
@@ -21,12 +22,13 @@ import static ru.javaops.topjava2.util.validation.ValidationUtil.assureIdConsist
 @Slf4j
 public class RestaurantController {
 
-    static final String REST_URL = "/api/restaurant";
+    static final String REST_URL = "/api/profile/restaurants";
 
     @Autowired
     private RestaurantRepository restaurantRepository;
 
-    @PostMapping(value = "/admin", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody Restaurant restaurant) {
         log.info("create {}", restaurant);
         Restaurant created = restaurantRepository.save(restaurant);
@@ -36,13 +38,8 @@ public class RestaurantController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @DeleteMapping("/admin/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id) {
-        restaurantRepository.delete(id);
-    }
-
-    @PutMapping(value = "/admin/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
         log.info("update {} with id={}", restaurant, id);
@@ -50,15 +47,11 @@ public class RestaurantController {
         restaurantRepository.save(restaurant);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Restaurant> get(@PathVariable int id) {
-        return  ResponseEntity.of(restaurantRepository.findById(id));
-    }
-
-    @GetMapping("/{id}/with-meals")
-    public ResponseEntity<Restaurant> getWithMeals(@PathVariable int id) {
-        Restaurant restaurant = restaurantRepository.getWithMeals(id);
-        return  ResponseEntity.ok().body(restaurant);
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int id) {
+        restaurantRepository.delete(id);
     }
 
     @GetMapping
@@ -67,7 +60,8 @@ public class RestaurantController {
         return restaurantRepository.findAll();
     }
 
-
-
-
+    @GetMapping("/{id}")
+    public ResponseEntity<Restaurant> get(@PathVariable int id) {
+        return  ResponseEntity.of(restaurantRepository.findById(id));
+    }
 }

@@ -1,10 +1,7 @@
 package ru.javaops.topjava2.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -23,17 +20,15 @@ public class Meal extends NamedEntity {
     private int price;
 
     @Column(name = "date", nullable = false)
-    @NotNull
-    private LocalDate date;
+    private LocalDate date = LocalDate.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @JsonBackReference
     private Restaurant restaurant;
 
-    public Meal(Integer id, String name, LocalDate date, int price) {
+    public Meal(Integer id, String name, int price) {
         super(id, name);
-        this.date = date;
         this.price = price;
     }
 }
